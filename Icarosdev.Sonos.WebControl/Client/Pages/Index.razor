@@ -6,12 +6,12 @@
 <PageTitle>Sonos</PageTitle>
 
 <h1>Sonos</h1>
-
+@*
 <button class="btn btn-primary" @onclick="SonosOff">Sonos Off</button>
 <button class="btn btn-primary" @onclick="SonosOn">Sonos On</button>
 
 <p role="status">Answer: @(_status?.Status ?? "")</p>
-
+*@
 @if (_zones != null)
 {
     foreach (var zone in _zones)
@@ -23,8 +23,8 @@
                 </div>
                 <div class="col-sm">
                     <button class="btn btn-primary" @onclick="() => PlayPause(zone.Room.RoomName)">Sonos On-Off</button>
-                    <button class="btn btn-primary" @onclick="() => Play(zone.Room.RoomName)">Sonos On</button>
-                    <button class="btn btn-primary" @onclick="() => Pause(zone.Room.RoomName)">Sonos Off</button>
+@*                    <button class="btn btn-primary" @onclick="() => Play(zone.Room.RoomName)">Sonos On</button>
+                    <button class="btn btn-primary" @onclick="() => Pause(zone.Room.RoomName)">Sonos Off</button>*@
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
                 }
                 <div class="row row-margin @roomClass">
                     <div class="col-2">
-                        <img class="album-image" @onclick="() => ToggleMuteUnmute(room)" src="@GetPicture(room)"/>
+                        <img class="album-image" @onclick="() => ToggleMuteUnmute(room)" src="@room.State.CurrentTrack.AbsoluteAlbumArtUri"/>
                     </div>
                     <div class="col-2">
 
@@ -56,8 +56,8 @@
 
 
 @code {
-
-        const string SonosServer = "raspberrypi";
+        
+    const string SonosServer = "raspberrypi";
     private Zone[]? _zones;
     private OperationStatus? _status;
     private SonosControl? _sonosControl;
@@ -66,8 +66,18 @@
     protected override async Task<Task> OnInitializedAsync()
     {
         _sonosControl = new SonosControl(SonosServer);
-        await LoadZones();
+        StartAutoRefresh();
         return base.OnInitializedAsync();
+    }
+
+    void StartAutoRefresh()
+    {
+        var timer = new Timer(new TimerCallback(async _ =>
+        {
+            await LoadZones();
+
+            this.StateHasChanged();
+        }), null, 3000, 3000);
     }
 
     private async Task LoadZones()
@@ -141,11 +151,6 @@
         {
             await Mute(room.RoomName);
         }
-    }
-
-    public string GetPicture(Room room)
-    {
-        return $"{room.State.CurrentTrack.AbsoluteAlbumArtUri}";
     }
 
     public string ResolveMainTrackInformation(Room room)
