@@ -1,0 +1,133 @@
+﻿@page "/"
+@using Icarosdev.Sonos.Api.Model
+@using Icarosdev.Sonos.Api
+
+
+<PageTitle>Sonos</PageTitle>
+
+<h1>Sonos</h1>
+
+<button class="btn btn-primary" @onclick="SonosOff">Sonos Off</button>
+<button class="btn btn-primary" @onclick="SonosOn">Sonos On</button>
+
+<p role="status">Answer: @(_status?.Status ?? "")</p>
+
+@if (_zones != null)
+{
+    foreach (var zone in _zones)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="w-25">
+                    <h3>Group: @zone.Room.RoomName</h3>
+                </div>
+                <div class="col-sm">
+                    <button class="btn btn-primary" @onclick="() => PlayPause(zone.Room.RoomName)">Sonos On-Off</button>
+                    <button class="btn btn-primary" @onclick="() => Play(zone.Room.RoomName)">Sonos On</button>
+                    <button class="btn btn-primary" @onclick="() => Pause(zone.Room.RoomName)">Sonos Off</button>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            @foreach (var room in zone.Members)
+            {
+                var roomClass = room.State.Mute ? "room-off" : "room-on";
+                <div class="row @roomClass">
+                    <div class="col-md">
+                        <img src="@GetPicture(@room.State.CurrentTrack.AlbumArtUri)"/>
+                    </div>
+                    <div class="w-25">
+                        <span>@room.RoomName @room.State.CurrentTrack.StationName</span>
+                    </div>
+
+                    <div class="col-sm">
+                        <button class="btn btn-primary" @onclick="() => Mute(room.RoomName)">Mute</button>
+                    </div>
+                    <div class="col-sm">
+                        <button class="btn btn-primary" @onclick="() => Unmute(room.RoomName)">Unmute</button>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+}
+
+
+@code {
+
+    string sonosServer = "raspberrypi";
+    int port = 5005;
+    private Zone[]? _zones;
+    private OperationStatus? _status;
+    private SonosControl? _sonosControl = new("raspberrypi");
+
+    protected override async Task<Task> OnInitializedAsync()
+    {
+        _sonosControl = new SonosControl(sonosServer, port);
+        await LoadZones();
+        return base.OnInitializedAsync();
+    }
+
+    private async Task LoadZones()
+    {
+        await Task.Delay(2000);
+        _zones = await _sonosControl?.GetAllZones();
+    }
+
+    private async Task SonosOff()
+    {
+        _status = new OperationStatus { Status = "sending ..." };
+        _status = await _sonosControl?.PauseAll();
+    }
+
+    private async Task SonosOn()
+    {
+        _status = new OperationStatus { Status = "sending ..." };
+        _status = await _sonosControl?.ResumeAll();
+        await LoadZones();
+    }
+
+    private async Task PlayPause(string zoneName)
+    {
+        _status = new OperationStatus { Status = "sending ..." };
+        _status = await _sonosControl?.PlayPause(zoneName);
+        await LoadZones();
+    }
+
+    private async Task Play(string zoneName)
+    {
+        _status = new OperationStatus { Status = "sending ..." };
+        _status = await _sonosControl?.Play(zoneName);
+        await LoadZones();
+    }
+
+    private async Task Pause(string zoneName)
+    {
+        _status = new OperationStatus { Status = "sending ..." };
+        _status = await _sonosControl?.Pause(zoneName);
+        await LoadZones();
+    }
+
+    private async Task Mute(string zoneName)
+    {
+        _status = new OperationStatus { Status = "sending ..." };
+        _status = await _sonosControl?.Mute(zoneName);
+        await LoadZones();
+    }
+
+    private async Task Unmute(string zoneName)
+    {
+        _status = new OperationStatus { Status = "sending ..." };
+        _status = await _sonosControl?.Unmute(zoneName);
+        await LoadZones();
+    }
+
+    public string GetPicture(string relativePath)
+    {
+        return $"http://{sonosServer}:{port}{relativePath}"
+    }
+
+}

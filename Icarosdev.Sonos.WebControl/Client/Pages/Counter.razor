@@ -1,0 +1,37 @@
+﻿@page "/counter"
+@using Icarosdev.Sonos.Api
+@using Icarosdev.Sonos.Api.Model
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+<p role="status">Current count: @zones</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="SonosOff">Sonos Off</button>
+<button class="btn btn-primary" @onclick="SonosOn">Sonos On</button>
+
+@code {
+    private int currentCount = 0;
+    private OperationStatus? zones;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private async Task SonosOff()
+    {
+        var sonosControl = new SonosControl("raspberrypi", 5005);
+        zones = await sonosControl.PauseAll();
+    }
+    
+    private async Task SonosOn()
+    {
+        var sonosControl = new SonosControl("raspberrypi", 5005);
+        zones = await sonosControl.ResumeAll();
+    }
+
+}
