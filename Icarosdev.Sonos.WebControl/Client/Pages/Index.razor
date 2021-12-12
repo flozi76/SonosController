@@ -39,12 +39,13 @@
                 }
                 <div class="row row-margin @roomClass">
                     <div class="col-2">
-                        <img @onclick="() => ToggleMuteUnmute(room)" src="@GetPicture(room)"/>
+                        <img class="album-image" @onclick="() => ToggleMuteUnmute(room)" src="@GetPicture(room)"/>
                     </div>
                     <div class="col-2">
 
                         <h4>@room.RoomName</h4>
-                        <span>@room.State.CurrentTrack.StationName</span>
+                        <span>@ResolveMainTrackInformation(room)</span>
+                        <span>@ResolveDetailTrackInformation(room)</span>
                     </div>
                 </div>
             }
@@ -145,6 +146,16 @@
     public string GetPicture(Room room)
     {
         return $"{room.State.CurrentTrack.AbsoluteAlbumArtUri}";
+    }
+
+    public string ResolveMainTrackInformation(Room room)
+    {
+        return room.State.CurrentTrack.Artist;
+    }
+
+    public string ResolveDetailTrackInformation(Room room)
+    {
+        return string.Empty;
     }
 
 }
