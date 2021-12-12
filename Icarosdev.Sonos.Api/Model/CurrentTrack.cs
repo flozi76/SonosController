@@ -5,7 +5,13 @@ namespace Icarosdev.Sonos.Api.Model;
 public class CurrentTrack
 {
     [JsonProperty("artist")]
-    public string Artist { get; set; }
+    public string? Artist { get; set; }
+    
+    [JsonProperty("title")]
+    public string? Title { get; set; }    
+
+    [JsonProperty("album")]
+    public string? Album { get; set; }
 
     [JsonProperty("albumArtUri")]
     public string AlbumArtUri { get; set; }
@@ -23,7 +29,7 @@ public class CurrentTrack
     public string Type { get; set; }
 
     [JsonProperty("stationName")]
-    public string StationName { get; set; }
+    public string? StationName { get; set; }
 
     [JsonProperty("absoluteAlbumArtUri")]
     public Uri AbsoluteAlbumArtUri { get; set; }

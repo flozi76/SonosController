@@ -73,6 +73,25 @@ public class SonosControl
         return result;
     }
 
+    public string? ResolveMainTrackInformation(Room room)
+    {
+        var type = room.State.CurrentTrack.Type;
+        return type == "radio" ? room.State.CurrentTrack.StationName : $"Artist: {room.State.CurrentTrack.Artist}";
+    }
+
+    public string? ResolveDetailTrackInformation(Room room)
+    {
+        var type = room.State.CurrentTrack.Type;
+        if (type == "radio")
+        {
+            return room.State.CurrentTrack.Title;
+        }
+        else
+        {
+            return $"Album - Title: {room.State.CurrentTrack.Album} - {room.State.CurrentTrack.Title}";
+        }
+    }
+
     private async Task<T?> CallSonos<T>(Uri uri)
     {
         try

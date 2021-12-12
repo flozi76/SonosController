@@ -4,9 +4,9 @@
 
 
 <PageTitle>Sonos</PageTitle>
-
-<h1>Sonos</h1>
 @*
+<h1>Sonos</h1>
+
 <button class="btn btn-primary" @onclick="SonosOff">Sonos Off</button>
 <button class="btn btn-primary" @onclick="SonosOn">Sonos On</button>
 
@@ -41,11 +41,11 @@
                     <div class="col-2">
                         <img class="album-image" @onclick="() => ToggleMuteUnmute(room)" src="@room.State.CurrentTrack.AbsoluteAlbumArtUri"/>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3">
 
                         <h4>@room.RoomName</h4>
-                        <span>@ResolveMainTrackInformation(room)</span>
-                        <span>@ResolveDetailTrackInformation(room)</span>
+                        <h5>@ResolveMainTrackInformation(room)</h5>
+                        <h6>@ResolveDetailTrackInformation(room)</h6>
                     </div>
                 </div>
             }
@@ -153,14 +153,16 @@
         }
     }
 
-    public string ResolveMainTrackInformation(Room room)
+    public string? ResolveMainTrackInformation(Room room)
     {
-        return room.State.CurrentTrack.Artist;
+        string? trackMainInformation = _sonosControl?.ResolveMainTrackInformation(room);
+        return trackMainInformation;
     }
 
     public string ResolveDetailTrackInformation(Room room)
     {
-        return string.Empty;
+        string? trackMainInformation = _sonosControl?.ResolveDetailTrackInformation(room);
+        return trackMainInformation;
     }
 
 }
