@@ -64,9 +64,37 @@ a, .btn-link {
     }
 
 .room-on {
+    border: 10px solid #f4a261;
+    border-radius: 15px;
     background-color: #26b050;
 }
 
 .room-off {
+    border: 10px solid #f4a261;
+    border-radius: 15px;
     background-color: lightgrey
+}
+
+
+.progress {
+    height: 100%;
+    border: 10px solid #f4a261;
+    border-radius: 15px;
+    background: repeating-linear-gradient( 45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px );
+    background-size: 150% 100%;
+    animation: progres 4s infinite linear;
+}
+
+@keyframes progres {
+    0% {
+        background-position: 100% 50%
+    }
+
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+.row-margin {
+    margin-top: 20px;
 }

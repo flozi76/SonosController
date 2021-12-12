@@ -33,21 +33,19 @@
             @foreach (var room in zone.Members)
             {
                 var roomClass = room.State.Mute ? "room-off" : "room-on";
-                <div class="row @roomClass">
-                    <div class="col-md">
-                        <img src="@GetPicture(@room.State.CurrentTrack.AlbumArtUri)"/>
+                if (!string.IsNullOrWhiteSpace(_updatingRoom) && _updatingRoom == room.RoomName)
+                {
+                    roomClass = "progress";
+                }
+                <div class="row row-margin @roomClass">
+                    <div class="col-2">
+                        <img @onclick="() => ToggleMuteUnmute(room)" src="@GetPicture(room)"/>
                     </div>
-                    <div class="w-25">
-                        <span>@room.RoomName @room.State.CurrentTrack.StationName</span>
-                    </div>
+                    <div class="col-2">
 
-                    <div class="col-sm">
-                        <button class="btn btn-primary" @onclick="() => Mute(room.RoomName)">Mute</button>
+                        <h4>@room.RoomName</h4>
+                        <span>@room.State.CurrentTrack.StationName</span>
                     </div>
-                    <div class="col-sm">
-                        <button class="btn btn-primary" @onclick="() => Unmute(room.RoomName)">Unmute</button>
-                    </div>
-
                 </div>
             }
 
@@ -58,15 +56,15 @@
 
 @code {
 
-    string sonosServer = "raspberrypi";
-    int port = 5005;
+        const string SonosServer = "raspberrypi";
     private Zone[]? _zones;
     private OperationStatus? _status;
-    private SonosControl? _sonosControl = new("raspberrypi");
+    private SonosControl? _sonosControl;
+    private string? _updatingRoom;
 
     protected override async Task<Task> OnInitializedAsync()
     {
-        _sonosControl = new SonosControl(sonosServer, port);
+        _sonosControl = new SonosControl(SonosServer);
         await LoadZones();
         return base.OnInitializedAsync();
     }
@@ -75,59 +73,78 @@
     {
         await Task.Delay(2000);
         _zones = await _sonosControl?.GetAllZones();
+        _updatingRoom = null;
     }
 
     private async Task SonosOff()
     {
-        _status = new OperationStatus { Status = "sending ..." };
+        PerformOperation();
         _status = await _sonosControl?.PauseAll();
     }
 
     private async Task SonosOn()
     {
-        _status = new OperationStatus { Status = "sending ..." };
+        PerformOperation();
         _status = await _sonosControl?.ResumeAll();
         await LoadZones();
     }
 
     private async Task PlayPause(string zoneName)
     {
-        _status = new OperationStatus { Status = "sending ..." };
+        PerformOperation();
         _status = await _sonosControl?.PlayPause(zoneName);
         await LoadZones();
     }
 
     private async Task Play(string zoneName)
     {
-        _status = new OperationStatus { Status = "sending ..." };
+        PerformOperation();
         _status = await _sonosControl?.Play(zoneName);
         await LoadZones();
     }
 
     private async Task Pause(string zoneName)
     {
-        _status = new OperationStatus { Status = "sending ..." };
+        PerformOperation();
         _status = await _sonosControl?.Pause(zoneName);
         await LoadZones();
     }
 
-    private async Task Mute(string zoneName)
+    private async Task Mute(string roomName)
     {
-        _status = new OperationStatus { Status = "sending ..." };
-        _status = await _sonosControl?.Mute(zoneName);
+        PerformOperation(roomName);
+        _status = await _sonosControl?.Mute(roomName);
         await LoadZones();
     }
 
-    private async Task Unmute(string zoneName)
+    private async Task Unmute(string roomName)
     {
-        _status = new OperationStatus { Status = "sending ..." };
-        _status = await _sonosControl?.Unmute(zoneName);
+        PerformOperation(roomName);
+        _status = await _sonosControl?.Unmute(roomName);
         await LoadZones();
     }
 
-    public string GetPicture(string relativePath)
+    private void PerformOperation(string? roomName = null)
     {
-        return $"http://{sonosServer}:{port}{relativePath}"
+        _updatingRoom = roomName;
+        _status = new OperationStatus { Status = "sending ..." };
+    }
+
+    public async Task ToggleMuteUnmute(Room room)
+    {
+        if (room.State.Mute)
+        {
+            await Unmute(room.RoomName);
+        }
+        else
+        {
+            await Mute(room.RoomName);
+        }
+    }
+
+    public string GetPicture(Room room)
+    {
+        return $"{room.State.CurrentTrack.AbsoluteAlbumArtUri}";
     }
 
 }
