@@ -16,19 +16,27 @@
 {
     foreach (var zone in _zones)
     {
-        <div class="container">
-            <div class="row">
-                <div class="w-25">
-                    <h3>Group: @zone.Room.RoomName</h3>
+        var zoneRoom = zone.Room;
+        var zoneRoomClass = zoneRoom.State.Mute ? "zone-room-off" : "zone-room-on";
+        if (!string.IsNullOrWhiteSpace(_updatingRoom) && _updatingRoom == zoneRoom.RoomName)
+        {
+            zoneRoomClass = "progress";
+        }
+
+        <div class="container zone">
+            <div class="row row-margin @zoneRoomClass">
+                <div class="col-2">
+                    <img class="album-image" @onclick="() => PlayPause(zone.Room.RoomName)" src="@zoneRoom.State.CurrentTrack.AbsoluteAlbumArtUri"/>
                 </div>
-                <div class="col-sm">
-                    <button class="btn btn-primary" @onclick="() => PlayPause(zone.Room.RoomName)">Sonos On-Off</button>
-@*                    <button class="btn btn-primary" @onclick="() => Play(zone.Room.RoomName)">Sonos On</button>
-                    <button class="btn btn-primary" @onclick="() => Pause(zone.Room.RoomName)">Sonos Off</button>*@
+                <div class="col-3">
+                    <h2>Group: @zoneRoom.RoomName</h2>
+                    <h5>@ResolveMainTrackInformation(zoneRoom)</h5>
+                    <h6>@ResolveDetailTrackInformation(zoneRoom)</h6>
                 </div>
             </div>
         </div>
-        <div class="container">
+
+        <div class="container rooms">
 
             @foreach (var room in zone.Members)
             {
@@ -43,13 +51,15 @@
                     </div>
                     <div class="col-3">
 
-                        <h4>@room.RoomName</h4>
+                        <h2>@room.RoomName</h2>
                         <h5>@ResolveMainTrackInformation(room)</h5>
                         <h6>@ResolveDetailTrackInformation(room)</h6>
                     </div>
+                    <div class="col-7">
+                        <input type="range" class="form-range align-middle" id="customRange1">
+                    </div>
                 </div>
             }
-
         </div>
     }
 }
