@@ -4,15 +4,22 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aba08bc4-31e1-4b92-9ea1-38040a0f8738</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
+
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Client\Icarosdev.Sonos.WebControl.Client.csproj" />
-    <ProjectReference Include="..\Shared\Icarosdev.Sonos.WebControl.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 

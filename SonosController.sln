@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SonosController", "SonosController\SonosController.csproj", "{C06769A2-EFCF-4FDC-AE3E-7C6B23291AF5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icarosdev.Sonos.Api", "Icarosdev.Sonos.Api\Icarosdev.Sonos.Api.csproj", "{422FAD20-1ACF-45BF-9A60-CFAC39ED547B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icarosdev.Sonos.WebControl.Server", "Icarosdev.Sonos.WebControl\Server\Icarosdev.Sonos.WebControl.Server.csproj", "{6AB65C9D-76DA-4FC0-A0E5-3E4A2EB316E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icarosdev.Sonos.WebControl.Client", "Icarosdev.Sonos.WebControl\Client\Icarosdev.Sonos.WebControl.Client.csproj", "{5C295913-9D09-40A6-893E-4CD114023279}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icarosdev.Sonos.WebControl.Shared", "Icarosdev.Sonos.WebControl\Shared\Icarosdev.Sonos.WebControl.Shared.csproj", "{8C57AFD9-4E0D-4E5D-BB55-F00BB9F9420E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C06769A2-EFCF-4FDC-AE3E-7C6B23291AF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C06769A2-EFCF-4FDC-AE3E-7C6B23291AF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C06769A2-EFCF-4FDC-AE3E-7C6B23291AF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C06769A2-EFCF-4FDC-AE3E-7C6B23291AF5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{422FAD20-1ACF-45BF-9A60-CFAC39ED547B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{422FAD20-1ACF-45BF-9A60-CFAC39ED547B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{422FAD20-1ACF-45BF-9A60-CFAC39ED547B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,10 +27,6 @@ Global
 		{5C295913-9D09-40A6-893E-4CD114023279}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C295913-9D09-40A6-893E-4CD114023279}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C295913-9D09-40A6-893E-4CD114023279}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C57AFD9-4E0D-4E5D-BB55-F00BB9F9420E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C57AFD9-4E0D-4E5D-BB55-F00BB9F9420E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C57AFD9-4E0D-4E5D-BB55-F00BB9F9420E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C57AFD9-4E0D-4E5D-BB55-F00BB9F9420E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

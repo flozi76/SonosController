@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Icarosdev.Sonos.Api\Icarosdev.Sonos.Api.csproj" />
-    <ProjectReference Include="..\Shared\Icarosdev.Sonos.WebControl.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
